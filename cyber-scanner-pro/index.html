@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Scanner Pro</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <div class="scanner-wrap">
+
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg viewBox="0 0 16 16"><path d="M8 1L14 4v4c0 3.5-2.5 6-6 7C2.5 14 0 11.5 0 8V4L8 1z"/></svg>
+        </div>
+        <div class="logo-text">Cyber<span>Scanner</span> Pro</div>
+      </div>
+      <div class="status-indicator"><div class="dot"></div>SYSTEM READY</div>
+    </div>
+
+    <div class="scan-input-area">
+      <div class="input-label">// Target</div>
+      <div class="input-row">
+        <input class="target-input" id="targetInput" type="text" placeholder="192.168.1.1 or example.com" spellcheck="false" autocomplete="off">
+        <button class="scan-btn" id="scanBtn" onclick="startScan()">&#9654; SCAN</button>
+      </div>
+      <div class="scan-options" id="scanOptions">
+        <label class="opt-pill active" onclick="toggleOpt(this)"><input type="checkbox" checked> PORT SCAN</label>
+        <label class="opt-pill active" onclick="toggleOpt(this)"><input type="checkbox" checked> VULN CHECK</label>
+        <label class="opt-pill active" onclick="toggleOpt(this)"><input type="checkbox" checked> SSL AUDIT</label>
+        <label class="opt-pill" onclick="toggleOpt(this)"><input type="checkbox"> DNS ENUM</label>
+        <label class="opt-pill" onclick="toggleOpt(this)"><input type="checkbox"> OS DETECT</label>
+        <label class="opt-pill" onclick="toggleOpt(this)"><input type="checkbox"> BANNER GRAB</label>
+      </div>
+    </div>
+
+    <div class="progress-bar-wrap" id="progressWrap">
+      <div class="progress-label">
+        <span id="progressPhase">INITIALIZING</span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="progress-stages" id="progressStages"></div>
+    </div>
+
+    <div class="metrics-grid">
+      <div class="metric-card"><div class="metric-label">Open Ports</div><div class="metric-value blue" id="mPorts">—</div><div class="metric-sub">discovered</div></div>
+      <div class="metric-card"><div class="metric-label">Vulns Found</div><div class="metric-value red" id="mVulns">—</div><div class="metric-sub">total issues</div></div>
+      <div class="metric-card"><div class="metric-label">Risk Score</div><div class="metric-value amber" id="mRisk">—</div><div class="metric-sub">out of 100</div></div>
+      <div class="metric-card"><div class="metric-label">Scan Time</div><div class="metric-value green" id="mTime">—</div><div class="metric-sub">seconds</div></div>
+    </div>
+
+    <div class="results-panel">
+      <div class="panel-tabs">
+        <div class="tab active" onclick="switchTab('overview')">OVERVIEW</div>
+        <div class="tab" onclick="switchTab('vulns')">VULNERABILITIES <span class="tab-badge" id="vulnCount">0</span></div>
+        <div class="tab" onclick="switchTab('ports')">PORTS <span class="tab-badge" id="portCount">0</span></div>
+        <div class="tab" onclick="switchTab('log')">SCAN LOG</div>
+      </div>
+
+      <div class="tab-content active" id="tab-overview">
+        <div class="scan-idle" id="idleState">
+          <div class="idle-icon">&#9678;</div>
+          ENTER A TARGET AND PRESS SCAN
+        </div>
+        <div id="overviewContent" style="display:none">
+          <div class="threat-score-ring">
+            <div class="ring-wrap">
+              <svg width="70" height="70" viewBox="0 0 70 70">
+                <circle class="track" cx="35" cy="35" r="25" fill="none" stroke-width="4"/>
+                <circle class="fill" id="scoreRing" cx="35" cy="35" r="25" fill="none" stroke-width="4" stroke-linecap="round"/>
+              </svg>
+              <div class="ring-label" style="margin-top:-58px">
+                <div class="ring-score" id="ringScore">—</div>
+                <div class="ring-sub">RISK</div>
+              </div>
+            </div>
+            <div class="score-breakdown" id="scoreBreakdown"></div>
+          </div>
+          <div id="findingSummary"></div>
+          <div class="action-row">
+            <a class="action-btn" href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener">&#8599; OWASP TOP 10</a>
+            <a class="action-btn" href="https://nvd.nist.gov/" target="_blank" rel="noopener">&#8599; CVE DATABASE</a>
+            <button class="action-btn" onclick="exportReport()">&#8595; EXPORT REPORT</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="tab-vulns">
+        <div class="empty-state" id="vulnsEmpty">No scan data — run a scan first</div>
+        <div id="vulnsList"></div>
+      </div>
+
+      <div class="tab-content" id="tab-ports">
+        <div class="empty-state" id="portsEmpty">No scan data — run a scan first</div>
+        <div id="portsList"></div>
+      </div>
+
+      <div class="tab-content" id="tab-log">
+        <div class="log-area" id="logArea">
+          <div class="log-line log-dim">&gt; Waiting for scan...</div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="footer">
+      <span>Cyber Scanner Pro &mdash; for educational &amp; authorised use only</span>
+    </footer>
+
+  </div>
+
+  <script src="scanner.js"></script>
+</body>
+</html>
